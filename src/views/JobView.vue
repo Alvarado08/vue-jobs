@@ -1,10 +1,13 @@
 <script setup>
 import { reactive, onMounted } from "vue";
-import { useRoute, RouterLink } from "vue-router";
+import { useRoute, RouterLink, useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
 import BackButton from "@/components/BackButton.vue";
 import axios from "axios";
 
 const route = useRoute();
+const router = useRouter();
+const toast = useToast();
 
 const jobId = route.params.id;
 
@@ -13,9 +16,24 @@ const state = reactive({
   isLoading: true,
 });
 
+const deleteJob = async () => {
+  try {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this job? This action cannot be undone."
+    );
+    if (!confirm) return;
+    await axios.delete(`/api/jobs/${jobId}`);
+    toast.success("Job deleted successfully");
+    router.push("/jobs");
+  } catch (error) {
+    toast.error("Error deleting job. Please try again.");
+    console.error("Error deleting job:", error);
+  }
+};
+
 onMounted(async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/jobs/${jobId}`);
+    const response = await axios.get(`/api/jobs/${jobId}`);
     state.job = response.data;
   } catch (error) {
     console.error("Error fetching job:", error);
@@ -44,9 +62,7 @@ onMounted(async () => {
             <div
               class="text-gray-500 mb-4 flex align-middle justify-center md:justify-start"
             >
-              <i
-                class="fa-solid fa-location-dot text-lg text-orange-700 mr-2"
-              ></i>
+              <i class="pi pi-map-marker text-lg text-orange-700 mr-2"></i>
               <p class="text-orange-700">{{ state.job.location }}</p>
             </div>
           </div>
@@ -102,6 +118,7 @@ onMounted(async () => {
               >Edit Job</RouterLink
             >
             <button
+              @click="deleteJob"
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
             >
               Delete Job
