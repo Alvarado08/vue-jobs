@@ -3,6 +3,7 @@ import { reactive } from "vue";
 import { useToast } from "vue-toastification";
 import axios from "axios";
 import router from "@/router";
+import BackButton from "@/components/BackButton.vue";
 
 const form = reactive({
   type: "Full-Time",
@@ -10,12 +11,10 @@ const form = reactive({
   description: "",
   salary: "",
   location: "",
-  company: {
-    name: "",
-    description: "",
-    contactEmail: "",
-    contactPhone: "",
-  },
+  companyName: "",
+  companyDescription: "",
+  companyEmail: "",
+  companyPhone: "",
 });
 
 const toast = useToast();
@@ -27,16 +26,14 @@ const handleSubmit = async () => {
     description: form.description,
     salary: form.salary,
     location: form.location,
-    company: {
-      name: form.company.name,
-      description: form.company.description,
-      contactEmail: form.company.contactEmail,
-      contactPhone: form.company.contactPhone,
-    },
+    companyName: form.companyName,
+    companyDescription: form.companyDescription,
+    companyEmail: form.companyEmail,
+    companyPhone: form.companyPhone,
   };
 
   try {
-    const response = await axios.post("/api/jobs", newJob);
+    const response = await axios.post("/api", newJob);
     toast.success("Job added successfully!");
     router.push(`/jobs/${response.data.id}`);
   } catch (error) {
@@ -48,6 +45,7 @@ const handleSubmit = async () => {
 
 <template>
   <section class="bg-green-50">
+    <BackButton />
     <div class="container m-auto max-w-2xl py-24">
       <div
         class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
@@ -146,7 +144,7 @@ const handleSubmit = async () => {
               >Company Name</label
             >
             <input
-              v-model="form.company.name"
+              v-model="form.companyName"
               type="text"
               id="company"
               name="company"
@@ -162,7 +160,7 @@ const handleSubmit = async () => {
               >Company Description</label
             >
             <textarea
-              v-model="form.company.description"
+              v-model="form.companyDescription"
               id="company_description"
               name="company_description"
               class="border rounded w-full py-2 px-3"
@@ -178,7 +176,7 @@ const handleSubmit = async () => {
               >Contact Email</label
             >
             <input
-              v-model="form.company.contactEmail"
+              v-model="form.companyEmail"
               type="email"
               id="contact_email"
               name="contact_email"
@@ -194,7 +192,7 @@ const handleSubmit = async () => {
               >Contact Phone</label
             >
             <input
-              v-model="form.company.contactPhone"
+              v-model="form.companyPhone"
               type="tel"
               id="contact_phone"
               name="contact_phone"

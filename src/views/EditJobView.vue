@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
 import axios from "axios";
 import router from "@/router";
+import BackButton from "@/components/BackButton.vue";
 
 const route = useRoute();
 const jobId = route.params.id;
@@ -14,12 +15,10 @@ const form = reactive({
   description: "",
   salary: "",
   location: "",
-  company: {
-    name: "",
-    description: "",
-    contactEmail: "",
-    contactPhone: "",
-  },
+  companyName: "",
+  companyDescription: "",
+  companyEmail: "",
+  companyPhone: "",
 });
 
 const state = reactive({
@@ -36,16 +35,14 @@ const handleSubmit = async () => {
     description: form.description,
     salary: form.salary,
     location: form.location,
-    company: {
-      name: form.company.name,
-      description: form.company.description,
-      contactEmail: form.company.contactEmail,
-      contactPhone: form.company.contactPhone,
-    },
+    companyName: form.companyName,
+    companyDescription: form.companyDescription,
+    companyEmail: form.companyEmail,
+    companyPhone: form.companyPhone,
   };
 
   try {
-    const response = await axios.put(`/api/jobs/${jobId}`, updatedJob);
+    const response = await axios.put(`/api/${jobId}`, updatedJob);
     toast.success("Job saved successfully!");
     router.push(`/jobs/${response.data.id}`);
   } catch (error) {
@@ -56,17 +53,17 @@ const handleSubmit = async () => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`/api/jobs/${jobId}`);
+    const response = await axios.get(`/api/${jobId}`);
     state.job = response.data;
     form.type = state.job.type;
     form.title = state.job.title;
     form.description = state.job.description;
     form.salary = state.job.salary;
     form.location = state.job.location;
-    form.company.name = state.job.company.name;
-    form.company.description = state.job.company.description;
-    form.company.contactEmail = state.job.company.contactEmail;
-    form.company.contactPhone = state.job.company.contactPhone;
+    form.companyName = state.job.companyName;
+    form.companyDescription = state.job.companyDescription;
+    form.companyEmail = state.job.companyEmail;
+    form.companyPhone = state.job.companyPhone;
   } catch (error) {
     toast.error("Error fetching job details. Please try again.");
     console.error("Error fetching job details:", error);
@@ -78,6 +75,7 @@ onMounted(async () => {
 
 <template>
   <section class="bg-green-50">
+    <BackButton />
     <div class="container m-auto max-w-2xl py-24">
       <div
         class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
@@ -176,7 +174,7 @@ onMounted(async () => {
               >Company Name</label
             >
             <input
-              v-model="form.company.name"
+              v-model="form.companyName"
               type="text"
               id="company"
               name="company"
@@ -192,7 +190,7 @@ onMounted(async () => {
               >Company Description</label
             >
             <textarea
-              v-model="form.company.description"
+              v-model="form.companyDescription"
               id="company_description"
               name="company_description"
               class="border rounded w-full py-2 px-3"
@@ -208,7 +206,7 @@ onMounted(async () => {
               >Contact Email</label
             >
             <input
-              v-model="form.company.contactEmail"
+              v-model="form.companyEmail"
               type="email"
               id="contact_email"
               name="contact_email"
@@ -224,7 +222,7 @@ onMounted(async () => {
               >Contact Phone</label
             >
             <input
-              v-model="form.company.contactPhone"
+              v-model="form.companyPhone"
               type="tel"
               id="contact_phone"
               name="contact_phone"

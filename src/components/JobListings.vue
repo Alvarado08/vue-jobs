@@ -1,5 +1,4 @@
 <script setup>
-import jobData from "@/jobs.json";
 import JobListing from "@/components/JobListing.vue";
 import { ref, defineProps, onMounted, reactive } from "vue";
 import { RouterLink } from "vue-router";
@@ -12,7 +11,7 @@ const state = reactive({
 
 onMounted(async () => {
   try {
-    const response = await axios.get("/api/jobs");
+    const response = await axios.get("/api");
     state.jobs = response.data;
   } catch (error) {
     console.error("Error fetching jobs:", error);
