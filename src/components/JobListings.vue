@@ -2,7 +2,7 @@
 import JobListing from "@/components/JobListing.vue";
 import { ref, defineProps, onMounted, reactive } from "vue";
 import { RouterLink } from "vue-router";
-import axios from "axios";
+import axios from "@/axios";
 
 const state = reactive({
   jobs: [],

@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 import { useToast } from "vue-toastification";
-import axios from "axios";
+import axios from "@/axios";
 import router from "@/router";
 import BackButton from "@/components/BackButton.vue";
 

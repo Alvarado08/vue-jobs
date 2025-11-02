@@ -2,7 +2,7 @@
 import { reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useToast } from "vue-toastification";
-import axios from "axios";
+import axios from "@/axios";
 import router from "@/router";
 import BackButton from "@/components/BackButton.vue";
 

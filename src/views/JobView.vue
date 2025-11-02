@@ -3,7 +3,7 @@ import { reactive, onMounted } from "vue";
 import { useRoute, RouterLink, useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
 import BackButton from "@/components/BackButton.vue";
-import axios from "axios";
+import axios from "@/axios";
 
 const route = useRoute();
 const router = useRouter();
